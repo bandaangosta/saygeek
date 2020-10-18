@@ -18,7 +18,7 @@ import re
 import random
 
 class SayGeek(object):
-    """Port of ADC's SayGeek, originally a bash script"""
+    """Port of ADC's saygeek, originally a bash script"""
 
     PREFIXES = {
         'ALMA': 'Se dijo en ALMA alguna vez',
@@ -82,11 +82,33 @@ if __name__ == "__main__":
 
     app = typer.Typer(add_completion=False)
 
+    @app.callback()
+    def callback():
+        """
+        Classic ALMA saygeek application, ported to Python.
+        It returns random funny geek or historical ALMA quotes.
+
+        Usage:
+
+        saygeek phrase AOG
+
+        saygeek phrase ALMA
+
+        saygeek phrase GOLDEN-JIRA
+
+        saygeek keys
+        """
+
     @app.command()
-    def main(key: str = typer.Argument(None)):
+    def phrase(key: str = typer.Argument(None)):
         sg = SayGeek()
         data = sg.random_phrase(key)
         header = '[{}]:\n'.format(data['prefix']) if data['prefix'] else ''
         print('{}{}'.format(header, data['phrase']))
+
+    @app.command()
+    def keys():
+        sg = SayGeek()
+        print('\n'.join(sorted(sg.keys)))
 
     app()
