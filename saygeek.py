@@ -1,19 +1,36 @@
 '''
+This class is a Python port of classic ALMA saygeek application, originally written in bash.
+Original version was written by several ALMA geeks.
+Python version by JLO.
 
-Requirements for stand-alone usage:
+During porting, chance was taken to remove hard-coded "phrases", saving them in the database
+instead. Other very minor creative liberties were also taken, like aligning language in prefix
+and phrases, where applicable.
+
+Requirements for command-line usage:
 pip install typer
 
 '''
-from pprint import pprint
+
 import re
 import random
 
 class SayGeek(object):
     """Port of ADC's SayGeek, originally a bash script"""
-    def __init__(self):
+
+    PREFIXES = {
+        'ALMA': 'Se dijo en ALMA alguna vez',
+        'AOG': 'Se dijo en el Control Room alguna vez',
+        'GOLDEN_SVN': 'Funny SVN logs',
+        'BAD-TRANSLATIONS': 'Anglicismos directos',
+        'BAD-SPANISH': 'Español mal usado',
+        'GOLDEN-JIRA': 'Notable tickets'
+    }
+
+    def __init__(self, path_to_db='./saygeek.db'):
         super(SayGeek, self).__init__()
 
-        with open('saygeek.db') as f:
+        with open(path_to_db) as f:
             lines = f.readlines()
 
         self.phrases = {}
@@ -23,33 +40,44 @@ class SayGeek(object):
             if line.startswith('#'):
                 continue
 
-            # Match pattern _KEY_
+            # Match pattern _KEY_. E.g., _ALMA_, _AOG_, _HUMOUR_, etc
             _key = re.findall(r'_([^_]*)_', line)
             if not _key:
                 continue
             key = _key[0]
+            # If key is new, create a new key-phrases list
             if key not in self.keys:
                 self.keys.append(key)
                 self.phrases[key] = []
 
+            # Append phrase to corresponding list
             self.phrases[key].append(line.strip(f'_{key}_').strip())
 
     def random_phrase(self, key=None):
+        '''Return random phrase from key list'''
+
+        # If no key is given, choose randomly from all found in database
         if key is None:
             _key = random.choice(self.keys)
         else:
             _key = key
 
-        return {'key': _key, 'phrase': random.choice(self.phrases[_key])}
-
-def main(name: str):
-    typer.echo(f"Hello {name}")
+        return {
+            'key': _key,
+            'phrase': random.choice(self.phrases[_key]),
+            'prefix': self.PREFIXES.get(_key)
+        }
 
 if __name__ == "__main__":
-    # import typer
-    # typer.run(main)
+    import typer
 
-    sg = SayGeek()
-    # print(sg.keys)
-    print(sg.random_phrase('ALMA'))
-    print(sg.random_phrase('AOG'))
+    app = typer.Typer(add_completion=False)
+
+    @app.command()
+    def main(key: str = typer.Argument(None)):
+        sg = SayGeek()
+        data = sg.random_phrase(key)
+        header = '[{}]:\n'.format(data['prefix']) if data['prefix'] else ''
+        print('{}{}'.format(header, data['phrase']))
+
+    app()
