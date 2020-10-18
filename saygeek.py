@@ -58,6 +58,8 @@ class SayGeek(object):
     def random_phrase(self, key=None):
         '''Return random phrase from key list'''
 
+        random.seed()
+
         # If no key is given, choose randomly from all found in database
         if key is None:
             _key = random.choice(self.keys)
