@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 '''
 This class is a Python port of classic ALMA saygeek application, originally written in bash.
 Original version was written by several ALMA geeks.
@@ -21,8 +23,8 @@ class SayGeek(object):
     PREFIXES = {
         'ALMA': 'Se dijo en ALMA alguna vez',
         'AOG': 'Se dijo en el Control Room alguna vez',
-        'GOLDEN_SVN': 'Funny SVN logs',
-        'BAD-TRANSLATIONS': 'Anglicismos directos',
+        'GOLDEN-SVN': 'Funny SVN logs',
+        'BAD-TRANSLATION': 'Anglicismos directos',
         'BAD-SPANISH': 'Español mal usado',
         'GOLDEN-JIRA': 'Notable tickets'
     }
@@ -61,6 +63,13 @@ class SayGeek(object):
             _key = random.choice(self.keys)
         else:
             _key = key
+
+        if _key not in self.keys:
+            return {
+                'key': _key,
+                'phrase': 'Error: key {} not found in database'.format(_key),
+                'prefix': None
+            }
 
         return {
             'key': _key,
