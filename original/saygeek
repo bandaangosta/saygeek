@@ -1,0 +1,100 @@
+#!/bin/sh
+
+DB=`dirname $0`/saygeek.db
+[ ! -e $DB ] && DB=`dirname $0`/../config/saygeek.db
+[ ! -e $DB ] && DB="$ACSDATA/config/saygeek.db"
+
+if [ "$1" = "-h" ]; then
+  echo "I see, you need help to say something geek. Try with one of these:"
+  echo "  saygeek"
+  echo "  saygeek SHAMAN"
+  W=""; for word in `cat $DB| awk '{print $1}'`; do W="$W a[\"$word\"]=True;"; done;
+  for word in `python -c "a={}; $W  print ' '.join([k[1:-1] for k in a.keys()])"`; do echo "  saygeek $word"; done
+  exit
+elif [ "$1" = "" ]; then
+  FILTER="_HUMOUR_"
+else
+  FILTER="_$1_"
+fi
+
+
+# last contribution --jgil, August 2018
+if [ "$FILTER" = "_SHAMAN_" ]; then
+cat  <<'_EOF'
+
+Grammar Nazi, Compiled since 2011.
+
+Anglicismos directos:
+---------------------
+Fixear taguear comitiar deletar chequear patchear randomico eskipiar codear lupear bakapear rebutear loguear restartear forguardear mergear backportear targezetear gezipear bezipear arsynquear pinguear pestripear deployar andeployar mockear tareo deprecar lockeo esplitear trabelshutear logcito pumpear (las antenas), crashear, tunear isolado buildear conformancia defectear dropear paniquear plotear refusar atachar askear empowerear triguerear stallear spooleando pushearlo confidente esponsoreado fadear shadear responsivo circumventear utilería debunkear nukear dockear sumarizar rejecteo freeziado inyestar hookear driftear refactorear triagear valuable recreo crosschequear parchear destarear minutear alocar reprobar detachar recrear monitorizar matchea fluente reviendo ingestar colectamos esplaiciarlo estaquear reversar templatizado recapitularizar capabilidades apendear copypastear apendear killear abilidad queriable predictible divaguear ensurarse anestado parchean sobrebordó contribuidor "filtrado out" reconversar searchear mavenizar inyestar selectar FARea deliverar budgetear feasibilidad
+
+Ingles mal usado - misconceptions
+---------------------------------
+firewall del AOS
+
+Español mal usado:
+------------------
+apuntar retratar alocado repartir aplicante poleo aplicar sugestiones rehusar convincencia reportería bloqueante parpadeazos reprobar sortear popular rediscutir fundado absorbido coleccionar reganar resignar "pedazo de hardware" "loguear fuera" sumario introducete
+
+"Déjame saber cuando" (let me know when)
+"Te llamo para atrás" (I'll call you back)
+"Volver para atrás" (come back)
+"La troca" (the truck)
+"Me siento confidente” (I feel confident)
+"Llevare la ropa a la Washeteria"
+"Es un proyecto ancillario"
+
+Golden Phrases in JIRA
+----------------------
+ICT-3346: "... a line or curve for TDM, and in FDM they resemble hanging bananas ..."
+PRTSIR-3415: "... we going to make a local APH to FEPSU..."
+ICT-5003: "... My message from 2 days ago should be disregarded as it was a user error... https://www.youtube.com/watch?v=d_TWafNlSMs ... "
+ICT-2723: "... bringing CORR operational should save so many lives."
+PRTSIR-6052: "... This was because, someone, to "disable" the QuickLookUI patch..."
+ICT-4492: "... Jesus, you are right ..."
+ICT-5433 "... like the TPP is hemorrhaging memory ..."
+COMP-7004 "... TELCAL always crushed at the end ..."
+ICT-5433 "... I do not know who/what kibana is? ..."
+PRTSIR-7382 "... DV16 container crushed ..."
+ICT-4757 "... not producing WVR coefficients or T_sys when looking at the shutter is reasonable behaviour, I would think ..."
+PRTSIR-9459 "... pointing results = 0 ... too good to be real ..."
+ICT-7251 "... rejecting this ticket as a cosmic radiation bug ..."
+ICT-507 "... That said, my sympathy has its limits... "
+ICT-5179 "... I have no sympathy for people complaining about problems in this area ..."
+ICT-10777 "... BTW, I think we have a different understanding of the word 'Shamefully' ..."
+COMP-4664 "... (Safari on Mac) crushes when enter a keyword ..."
+ICT-11966 "...Tomas, You are a next generation bug finding machine! ... "
+ICT-11969 “...Theirs is a power far greater than mine.”
+APO-3637 "...please disregard this ticket. ISO/OSI lvl 8 problem"
+PRTSPR-33922 "...Please let me rest"
+ICT-12910 "...first time simulating under cycle6 software an kaboom!"
+SCCB-878 "... the c++ version is irrelevant to us ... gollum."
+SAFE-154 "...contact Calama airport and find out whether they think it is safe that dogs are allowed close to the runways"
+-- And the WINNER: El cerro de caca: https://jira.alma.cl/browse/OTHM-313
+
+Funny SVN logs, snippets of code
+--------------------------------
+SVN log 206364: "Manuel idiot, revert the failure."
+SVN log 205079: "nodes' Mickey Mouse removed!"
+SVN log 181744: "Harmless for anything non-human, or near."
+echo -e "Something EVIL happend"; exit 666
+
+(ACS humour) Y Tzu llego? No, no "Tzube"!
+(ACS humour) Que diferencia tiene la milanesa y la escalopa Kaiser? Ninguna, son "kaiser" lo mismo
+
+_EOF
+exit
+fi
+
+
+PREFIX=""
+[ "$FILTER" = "_ALMA_" ] && PREFIX="[Once upon a time @ALMA] "
+[ "$FILTER" = "_HUMOUR_" ] && PREFIX="--- "
+
+
+NUM="`cat $DB | egrep $FILTER | wc -l`"
+
+[ $NUM = 0 ] && echo $FILTER && exit
+WORD="`cat $DB | egrep $FILTER | head -n $((RANDOM%($NUM) + 1 )) | tail -n 1`"
+
+echo -e $PREFIX $WORD | sed -e s/"$FILTER "// | sed s/\$USER/$USER/
