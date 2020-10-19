@@ -16,19 +16,19 @@ and phrases, where applicable.
 
 ### Usage:
 
-    $ saygeek phrase AOG
+    $ saygeek.py phrase AOG
     [Se dijo en el Control Room alguna vez]:
     Déjate de pegarme en las patas Emiliano
 
-    $ saygeek phrase ALMA
+    $ saygeek.py phrase ALMA
     [Se dijo en ALMA alguna vez]:
     Mi problema son las tentaciones como Avarias y Guagüito...
 
-    $ saygeek phrase GOLDEN-JIRA
+    $ saygeek.py phrase GOLDEN-JIRA
     [Notable tickets]:
     ICT-5433 "... like the TPP is hemorrhaging memory ..."
 
-    $ saygeek keys
+    $ saygeek.py keys
     ALMA
     AOG
     BAD-CONCEPTS
