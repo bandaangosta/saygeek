@@ -16,7 +16,6 @@ import re
 import os
 import random
 
-#???
 from .definitions import PATH_DB
 
 class SayGeek(object):
