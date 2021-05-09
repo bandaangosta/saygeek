@@ -1,5 +1,3 @@
-#! /usr/bin/env python3
-
 '''
 This class is a Python port of classic ALMA saygeek application, originally written in bash.
 Original version was written by several ALMA geeks.
@@ -15,7 +13,11 @@ pip install typer
 '''
 
 import re
+import os
 import random
+
+#???
+from .definitions import PATH_DB
 
 class SayGeek(object):
     """Port of ADC's saygeek, originally a bash script"""
@@ -29,7 +31,7 @@ class SayGeek(object):
         'GOLDEN-JIRA': 'Notable tickets'
     }
 
-    def __init__(self, path_to_db='./saygeek.db'):
+    def __init__(self, path_to_db=PATH_DB):
         super(SayGeek, self).__init__()
 
         with open(path_to_db) as f:
@@ -58,7 +60,7 @@ class SayGeek(object):
     def random_phrase(self, key=None):
         '''Return random phrase from key list'''
 
-        random.seed()
+        random.seed(os.getrandom(10))
 
         # If no key is given, choose randomly from all found in database
         if key is None:
