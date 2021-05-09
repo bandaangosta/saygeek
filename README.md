@@ -1,6 +1,6 @@
 # saygeek
 
-This repository implements a Python port of classic ALMA saygeek application, originally written in bash.   
+This repository implements a Python port of classic ALMA saygeek application, originally written in bash.
 It provides a very simple command-line application to run it.
 
 Original version was written by several ALMA geeks.
@@ -10,25 +10,25 @@ During porting, chance was taken to remove hard-coded "phrases", saving them in 
 instead. Other very minor creative liberties were also taken, like aligning language in prefix
 and phrases, where applicable.
 
-### Requirements for command-line usage:   
-    
-    pip install typer
+### Installation:
+
+    pip install saygeek
 
 ### Usage:
 
-    $ saygeek.py phrase AOG
+    $ saygeek phrase AOG
     [Se dijo en el Control Room alguna vez]:
     Déjate de pegarme en las patas Emiliano
 
-    $ saygeek.py phrase ALMA
+    $ saygeek phrase ALMA
     [Se dijo en ALMA alguna vez]:
     Mi problema son las tentaciones como Avarias y Guagüito...
 
-    $ saygeek.py phrase GOLDEN-JIRA
+    $ saygeek phrase GOLDEN-JIRA
     [Notable tickets]:
     ICT-5433 "... like the TPP is hemorrhaging memory ..."
 
-    $ saygeek.py keys
+    $ saygeek keys
     ALMA
     AOG
     BAD-CONCEPTS
@@ -41,4 +41,4 @@ and phrases, where applicable.
     HELLO
     HUMOUR
     MOVIE
-    QUOTE       
+    QUOTE
