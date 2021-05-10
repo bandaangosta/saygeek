@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     name="saygeek",
-    version="1.0.0",
+    version="1.1.0",
     description="ALMA historical phrase generator",
     long_description=readme,
     long_description_content_type="text/markdown",
