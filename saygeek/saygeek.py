@@ -16,7 +16,7 @@ import re
 import os
 import random
 
-from .definitions import PATH_DB
+PATH_DB = os.path.join(os.path.dirname(__file__), 'resources', 'saygeek.db')
 
 class SayGeek(object):
     """Port of ADC's saygeek, originally a bash script"""

@@ -16,7 +16,7 @@ setuptools.setup(
     package_data={"saygeek": ["resources/*"]},
     entry_points={
         "console_scripts": [
-            "saygeek=saygeek.cli:main"
+            "saygeek=saygeek.__main__:main"
         ],
     },
     license="MIT",
